@@ -26,4 +26,17 @@ export class NewsService {
       map( ({ articles }) => articles ) 
     )
   }
+
+  //Tramos la categoria como parametro
+  getTopHeadlinesCategory( category: string ):Observable<Article[]> {
+    return this.http.get<RespuestaTopHeadlines>(`https://newsapi.org/v2/top-headlines?category=${ category }`, {
+      params: {
+        country: 'us',
+        apiKey: apiKey
+      }
+    }).pipe( //El pipe es para poder transformar la respuesta que nos da el servicio
+      map( ({ articles }) => articles ) 
+    )
+  }
+
 }
