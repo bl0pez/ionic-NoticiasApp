@@ -1,6 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { ActionSheetButton, ActionSheetController, Platform } from '@ionic/angular';
+
+//Plugins
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
+
 import { Article } from 'src/app/interfaces';
 
 @Component({
@@ -15,7 +19,9 @@ export class ArticleComponent {
 
   constructor(
     private iab:InAppBrowser,
-    private platform: Platform
+    private platform: Platform,
+    private actionSheetCtrl: ActionSheetController,
+    private socialSharing: SocialSharing
     ) { }
 
 
@@ -32,6 +38,49 @@ export class ArticleComponent {
     }
 
     window.open(this.article.url, '_blank');
+
+  }
+
+  async onOpenMenu(){
+
+    const normalBtns: ActionSheetButton[] = [
+      {
+        text: 'Favorito',
+        icon: 'heart-outline',
+        handler: () => this.onToggleFavorite()
+      },{
+        text: 'Cancelar',
+        icon: 'close',
+        role: 'cancel'
+      }
+    ]
+
+    const shareBtn: ActionSheetButton = {
+      text: 'Compartir',
+      icon: 'share-social-outline',
+      handler: () => this.onshareArticle()
+    }
+
+    //Validar si es un dispositivo movil
+    if(this.platform.is('capacitor')){
+      normalBtns.unshift(shareBtn)
+    }
+
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Opciones',
+      buttons: normalBtns
+    });
+
+
+    await actionSheet.present();
+
+  }
+
+  onshareArticle(){
+
+  }
+
+  onToggleFavorite(){
 
   }
 
