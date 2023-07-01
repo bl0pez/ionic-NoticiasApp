@@ -5,6 +5,8 @@ import { ActionSheetButton, ActionSheetController, Platform } from '@ionic/angul
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 
+import { StorageService } from '../../services/storage.service';
+
 import { Article } from 'src/app/interfaces';
 
 @Component({
@@ -21,7 +23,8 @@ export class ArticleComponent {
     private iab:InAppBrowser,
     private platform: Platform,
     private actionSheetCtrl: ActionSheetController,
-    private socialSharing: SocialSharing
+    private socialSharing: SocialSharing,
+    private StorageService: StorageService
     ) { }
 
 
@@ -77,11 +80,19 @@ export class ArticleComponent {
   }
 
   onshareArticle(){
+    const { title, source, url } = this.article;
 
+    this.socialSharing.share(
+      title,
+      source.name,
+      '',
+      url
+    )
   }
 
+  //Guardamos o eliminamos el articulo de favoritos
   onToggleFavorite(){
-
+    this.StorageService.saveRemoveArticle(this.article);
   }
 
 
