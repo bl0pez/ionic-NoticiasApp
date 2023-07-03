@@ -44,12 +44,17 @@ export class ArticleComponent {
 
   }
 
+  /**
+   * Metodo para mostrar el menu de opciones
+   */
   async onOpenMenu(){
+
+    const articleInFavorites = this.StorageService.articleInFavorites(this.article);
 
     const normalBtns: ActionSheetButton[] = [
       {
-        text: 'Favorito',
-        icon: 'heart-outline',
+        text: articleInFavorites ? 'Eliminar de favoritos' : 'Agregar a favoritos',
+        icon: articleInFavorites ? 'heart' : 'heart-outline',
         handler: () => this.onToggleFavorite()
       },{
         text: 'Cancelar',

@@ -58,4 +58,11 @@ export class StorageService {
     }
   }
 
+  //Metodo que verifica si el articulo esta en favoritos
+  articleInFavorites(article: Article) {
+
+    return !!this._localArticles.find(art => art.title === article.title);
+
+  }
+
 }
